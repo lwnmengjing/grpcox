@@ -11,11 +11,11 @@ turn [gRPCurl](https://github.com/fullstorydev/grpcurl) into web based UI, extre
 ## Installation
 ### Docker
 ```shell
-docker pull gusaul/grpcox:latest
+docker pull ghcr.io/lwnmengjing/grpcox:latest
 ```
 then run
 ```shell
-docker run -p 6969:6969 -v {ABSOLUTE_PATH_TO_LOG}/log:/log -d gusaul/grpcox
+docker run -p 6969:6969 -v {ABSOLUTE_PATH_TO_LOG}/log:/log -d ghcr.io/lwnmengjing/grpcox
 ```
 
 ### Docker Compose

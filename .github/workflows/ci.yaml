@@ -8,7 +8,6 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-
   check:
     name: Check
     runs-on: ubuntu-latest
@@ -30,6 +29,7 @@ jobs:
           go build .
   build:
     name: Build Image
+    needs: check
     runs-on: ubuntu-latest
     steps:
       - name: Check out code into the Go module directory
@@ -46,6 +46,19 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          flavor: |
+            latest=auto
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
