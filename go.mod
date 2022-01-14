@@ -7,4 +7,5 @@ require (
 	github.com/gorilla/mux v1.7.0
 	github.com/jhump/protoreflect v1.5.0
 	google.golang.org/grpc v1.21.0
+	gopkg.in/yaml.v2 v2.4.0
 )

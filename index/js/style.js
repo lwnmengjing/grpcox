@@ -1,5 +1,13 @@
 var target, use_tls, editor;
 
+$('#select-target').change(function() {
+    var selected = $(this).val();
+    if (selected === "") {
+        return false;
+    }
+    $('#server-target').val(selected);
+});
+
 $('#get-services').click(function(){
 
     // reset all selected list

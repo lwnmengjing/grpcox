@@ -5,12 +5,14 @@ import (
 	"context"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/gusaul/grpcox/core"
+	"gopkg.in/yaml.v2"
 )
 
 // Handler hold all handler methods
@@ -27,8 +29,30 @@ func InitHandler() *Handler {
 
 func (h *Handler) index(w http.ResponseWriter, r *http.Request) {
 	body := new(bytes.Buffer)
-	err := indexHTML.Execute(body, make(map[string]string))
+
+	config, err := ioutil.ReadFile("endpoints.yaml")
 	if err != nil {
+		log.Println(err)
+		writeError(w, err)
+		return
+	}
+
+	type Endpoint struct {
+		Name     string `yaml:"name"`
+		Endpoint string `yaml:"endpoint"`
+	}
+
+	endpoints := make([]Endpoint, 0)
+	err = yaml.Unmarshal(config, &endpoints)
+	if err != nil {
+		log.Println(err)
+		writeError(w, err)
+		return
+	}
+
+	err = indexHTML.Execute(body, map[string]interface{}{"endpoints": endpoints})
+	if err != nil {
+		log.Println(err)
 		writeError(w, err)
 		return
 	}
@@ -230,8 +254,8 @@ func (h *Handler) invokeFunction(w http.ResponseWriter, r *http.Request) {
 	var metadataStr string
 	for i, m := range metadataArr {
 		i += 1
-		if isEven := i % 2 == 0; isEven {
-			metadataStr = metadataStr+m
+		if isEven := i%2 == 0; isEven {
+			metadataStr = metadataStr + m
 			metadata = append(metadata, metadataStr)
 			metadataStr = ""
 			continue

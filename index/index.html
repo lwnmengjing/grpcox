@@ -32,8 +32,21 @@
 
       <div class="col-7">
         <div class="md-form input-group">
+          <div id="choose-target">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text btn-dark w-200" for="select-service"><i class="fa fa-internet-explorer"></i>&nbsp;&nbsp;gRPC Service Name&nbsp;&nbsp;</span>
+              </div>
+              <select class="browser-default custom-select" id="select-target">
+                <option value="">&nbsp;&nbsp;---&nbsp;&nbsp;</option>
+                {[ range .endpoints ]}
+                <option value="{[ .Endpoint ]}">&nbsp;&nbsp;{[ .Name ]}&nbsp;&nbsp;</option>
+                {[ end ]}
+              </select>
+            </div>
+          </div>
           <input type="text" class="form-control" id="server-target">
-          <label for="server-target">gRPC Server Target</label>
+<!--          <label for="server-target">gRPC Server Target</label>-->
           <div class="input-group-append">
             <button id="get-services" class="btn btn-mdb-color waves-effect m-0" type="button"><i class="fa fa-plug"></i></button>
             <div class="dropdown">
